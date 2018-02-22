@@ -1,0 +1,63 @@
+version: 2
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: microsoft/dotnet:2.0-sdk
+    steps:
+      - checkout
+      - run:
+          name: Checking files
+          command: ls
+      - run:
+          name: Restoring nuget packages
+          command: dotnet restore
+      - run:
+          name: Publishing app
+          command: dotnet publish -c Release -o bin/Release/netcoreapp2.0
+      - store_artifacts:
+          path: /app/SimpleAuth.Api/bin/Release/netcoreapp2.0
+          destination: simpleauth-artifact
+      - persist_to_workspace:
+          root: /
+          paths:
+            - app
+
+  deploy:
+    working_directory: /
+    docker:
+      - image: docker:17.05.0-ce-git
+        environment:
+          PROJECT_NAME: simpleauth-api
+          VERSION_PREFIX: v1.0
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: /
+      - deploy:
+          name: Push application Docker image
+          command: |
+             cd app
+             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                VERSION=${VERSION_PREFIX}.${CIRCLE_BUILD_NUM}
+                docker build -t ${DOCKER_ACCOUNT}/${PROJECT_NAME} .
+                docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+                docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest"
+                docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${VERSION}"
+                docker push "${DOCKER_ACCOUNT}/${PROJECT_NAME}"
+             fi
+        
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+#      - hold:
+#         type: approval
+#         requires:
+#           - build
+      - deploy:
+          context: org-global
+          requires:
+            - build
+ #           - hold 

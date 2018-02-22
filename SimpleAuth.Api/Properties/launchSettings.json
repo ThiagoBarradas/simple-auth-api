@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "SimpleAuth.Api": {
+      "commandName": "Project",
+      "environmentVariables": {
+        " ASPNETCORE_ENVIRONMENT": "Development",
+        " ASPNETCORE_Environment": "Development"
+      }
+    }
+  }
+}

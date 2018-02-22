@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EA745D87-F18C-42BC-A5DB-D39C4D4A7E0F}"
+	ProjectSection(SolutionItems) = preProject
+		codecov.yml = codecov.yml
+		CONTRIBUTING.md = CONTRIBUTING.md
+		Dockerfile = Dockerfile
+		ISSUE-TEMPLATE.md = ISSUE-TEMPLATE.md
+		PULLREQUEST-TEMPLATE.md = PULLREQUEST-TEMPLATE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleAuth.Api", "SimpleAuth.Api\SimpleAuth.Api.csproj", "{14E02C5F-9B14-4EBD-AF94-6E31B829B0CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleAuth.Api.Test", "SimpleAuth.Api.Test\SimpleAuth.Api.Test.csproj", "{10AE4E9E-05C2-42BC-BA5E-5FD009F579F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "circleci", "circleci", "{414FB67A-31DA-4D28-B275-39A52EAA4CAB}"
+	ProjectSection(SolutionItems) = preProject
+		.circleci\config.yml = .circleci\config.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14E02C5F-9B14-4EBD-AF94-6E31B829B0CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E02C5F-9B14-4EBD-AF94-6E31B829B0CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E02C5F-9B14-4EBD-AF94-6E31B829B0CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E02C5F-9B14-4EBD-AF94-6E31B829B0CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10AE4E9E-05C2-42BC-BA5E-5FD009F579F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10AE4E9E-05C2-42BC-BA5E-5FD009F579F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10AE4E9E-05C2-42BC-BA5E-5FD009F579F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10AE4E9E-05C2-42BC-BA5E-5FD009F579F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{414FB67A-31DA-4D28-B275-39A52EAA4CAB} = {EA745D87-F18C-42BC-A5DB-D39C4D4A7E0F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CBC60F3D-E137-4383-B66B-D0F3F209D7F0}
+	EndGlobalSection
+EndGlobal
