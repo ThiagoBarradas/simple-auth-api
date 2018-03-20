@@ -1,8 +1,12 @@
 ﻿using IpInfo.Api.Client.Models;
 using PackUtils;
 using SimpleAuth.Api.Models;
+using SimpleAuth.Api.Models.Filters;
+using SimpleAuth.Api.Models.Request;
 using SimpleAuth.Api.Models.Response;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UAUtil.Models;
 
 namespace SimpleAuth.Api.Mappers
@@ -13,7 +17,7 @@ namespace SimpleAuth.Api.Mappers
         {
             GetAccessTokenResponse response = new GetAccessTokenResponse
             {
-                UserKey = user.UserKey,
+                UserKey = accessToken.UserKey,
                 User = UserMapper.Map(user),
                 Token = accessToken.Token,
                 IpInfo = accessToken.IpInfo,
@@ -23,6 +27,20 @@ namespace SimpleAuth.Api.Mappers
             };
 
             return response;
+        }
+
+        public static SearchAccessTokensFilters Map(SearchSessionsRequest request)
+        {
+            SearchAccessTokensFilters filters = new SearchAccessTokensFilters
+            {
+                UserKey = request.UserKey,
+                PageSize = request.PageSize,
+                PageNumber = request.PageNumber,
+                SortField = request.SortField,
+                SortMode = request.SortMode.ToString()
+            };
+
+            return filters;
         }
 
         public static AccessToken Map(UserAgentDetails deviceInfo, GetIpInfoResponse ipInfo, string ip, User user)
@@ -38,6 +56,25 @@ namespace SimpleAuth.Api.Mappers
             };
 
             return accessToken;
+        }
+
+        public static SearchResponse<GetAccessTokenResponse> Map(SearchContainer<AccessToken> tokens, string url = "")
+        {
+            SearchResponse<GetAccessTokenResponse> tokensResponse = new SearchResponse<GetAccessTokenResponse>
+            {
+                Paging = new PagedList.PagedList(url, tokens.Total, tokens.PageNumber, tokens.PageSize),
+                Items = new List<GetAccessTokenResponse>()
+            };
+
+            if (tokens.Items != null && tokens.Items.Any())
+            {
+                foreach (var token in tokens.Items)
+                {
+                    tokensResponse.Items.Add(AccessTokenMapper.Map(token, null));
+                }
+            }
+
+            return tokensResponse;
         }
     }
 }

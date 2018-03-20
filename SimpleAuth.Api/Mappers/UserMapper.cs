@@ -14,6 +14,11 @@ namespace SimpleAuth.Api.Mappers
     {
         public static GetUserResponse Map(User user)
         {
+            if (user == null)
+            {
+                return null;
+            }
+
             GetUserResponse response = new GetUserResponse
             {
                 UserKey = user.UserKey,

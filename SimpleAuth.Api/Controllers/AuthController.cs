@@ -6,6 +6,7 @@ using SimpleAuth.Api.Mappers;
 using SimpleAuth.Api.Models.Request;
 using SimpleAuth.Api.Models.Response;
 using SimpleAuth.Api.Modules.Interface;
+using SimpleAuth.Api.Utilities;
 using System;
 using System.Linq;
 using System.Net;
@@ -25,12 +26,12 @@ namespace SimpleAuth.Api.Controller
             this.Get("sessions", args => this.ListSessions());
             this.Get("sessions/current", args => this.GetCurrentSession());
             this.Delete("logout", args => this.Logout());
-            this.Get("logout/all", args => this.LogoutAllExceptCurrentSession());
+            this.Delete("logout/all", args => this.LogoutAllExceptCurrentSession());
         }
 
         public object Login()
         {
-            var request = this.Bind<LoginRequest>();
+            var request = this.BindFromAll<LoginRequest>();
 
             var validation = this.Validate(request);
             if (validation.IsValid == false)
@@ -49,18 +50,19 @@ namespace SimpleAuth.Api.Controller
 
         public object ListSessions()
         {
-            throw new NotImplementedException();
-            //var request = this.Bind<UpdateUserRequest>();
-            //
-            //var validation = this.Validate(request);
-            //if (validation.IsValid == false)
-            //{
-            //    return this.CreateBadRequestResponse(validation);
-            //}
-            //
-            //var response = this.UserManager.UpdateUser(request);
-            //
-            //return this.CreateResponse(response);
+            if (!Authorize()) return Unauthorized();
+
+            var request = this.BindFromAll<SearchSessionsRequest>();
+
+            var validation = this.Validate(request);
+            if (validation.IsValid == false)
+            {
+                return this.CreateBadRequestResponse(validation);
+            }
+
+            var response = this.AuthManager.ListSessions(request, this.SecurityModule.User);
+
+            return this.CreateResponse(response);
         }
 
         public object GetCurrentSession()

@@ -6,12 +6,19 @@ namespace SimpleAuth.Api.Validators
 {
     public class LoginValidator : AbstractValidator<LoginRequest>
     {
-        
-
         public LoginValidator()
         {
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
             RuleFor(x => x.Password).NotEmpty().Matches(PasswordValidator.REGEX);
+        }
+    }
+
+    public class SearchSessionsValidator : AbstractValidator<SearchSessionsRequest>
+    {
+        public SearchSessionsValidator()
+        {
+            RuleFor(x => x.PageNumber).NotEmpty().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1);
         }
     }
 

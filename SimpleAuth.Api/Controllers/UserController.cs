@@ -26,7 +26,7 @@ namespace SimpleAuth.Api.Controller
 
         public object Create()
         {
-            var request = this.Bind<CreateUserRequest>();
+            var request = this.BindFromAll<CreateUserRequest>();
             
             var validation = this.Validate(request);
             if (validation.IsValid == false)
@@ -41,7 +41,7 @@ namespace SimpleAuth.Api.Controller
 
         public object Update()
         {
-            var request = this.Bind<UpdateUserRequest>();
+            var request = this.BindFromAll<UpdateUserRequest>();
 
             var validation = this.Validate(request);
             if (validation.IsValid == false)
@@ -56,7 +56,7 @@ namespace SimpleAuth.Api.Controller
 
         public object Get()
         {
-            var request = this.Bind<GetUserRequest>();
+            var request = this.BindFromAll<GetUserRequest>();
 
             var validation = this.Validate(request);
             if (validation.IsValid == false)
@@ -71,7 +71,7 @@ namespace SimpleAuth.Api.Controller
         
         public object List()
         {
-            var request = this.BindFromQuery<SearchUsersRequest>();
+            var request = this.BindFromAll<SearchUsersRequest>();
 
             var validation = this.Validate(request);
             if (validation.IsValid == false)
@@ -86,7 +86,7 @@ namespace SimpleAuth.Api.Controller
 
         public object IsEmailAvailable()
         {
-            var request = this.Bind<IsEmailAvailableRequest>();
+            var request = this.BindFromAll<IsEmailAvailableRequest>();
 
             var validation = this.Validate(request);
             if (validation.IsValid == false)
@@ -101,7 +101,7 @@ namespace SimpleAuth.Api.Controller
 
         public object ConfirmEmail()
         {
-            var request = this.Bind<ConfirmUserEmailRequest>();
+            var request = this.BindFromAll<ConfirmUserEmailRequest>();
 
             var validation = this.Validate(request);
             if (validation.IsValid == false)

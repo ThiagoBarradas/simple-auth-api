@@ -3,6 +3,7 @@ using Nancy.Validation;
 using SimpleAuth.Api.Managers;
 using SimpleAuth.Api.Models.Request;
 using SimpleAuth.Api.Modules.Interface;
+using SimpleAuth.Api.Utilities;
 
 namespace SimpleAuth.Api.Controller
 {
@@ -22,7 +23,7 @@ namespace SimpleAuth.Api.Controller
 
         public object Create()
         {
-            var request = this.Bind<CreatePasswordResetRequest>();
+            var request = this.BindFromAll<CreatePasswordResetRequest>();
             
             var validation = this.Validate(request);
             if (validation.IsValid == false)
@@ -37,7 +38,7 @@ namespace SimpleAuth.Api.Controller
 
         public object Get()
         {
-            var request = this.Bind<GetPasswordResetRequest>();
+            var request = this.BindFromAll<GetPasswordResetRequest>();
 
             var validation = this.Validate(request);
             if (validation.IsValid == false)
@@ -52,7 +53,7 @@ namespace SimpleAuth.Api.Controller
 
         public object Use()
         {
-            var request = this.Bind<UsePasswordResetRequest>();
+            var request = this.BindFromAll<UsePasswordResetRequest>();
 
             var validation = this.Validate(request);
             if (validation.IsValid == false)

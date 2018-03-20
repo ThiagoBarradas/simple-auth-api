@@ -3,9 +3,11 @@ using MongoDB.Driver;
 using SimpleAuth.Api.Models;
 using SimpleAuth.Api.Models.Filters;
 using SimpleAuth.Api.Repository.Interface;
+using SimpleAuth.Api.Repository.QueryBuilders;
 using SimpleAuth.Api.Utilities.Interface;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SimpleAuth.Api.Repository
 {
@@ -91,8 +93,62 @@ namespace SimpleAuth.Api.Repository
 
         public SearchContainer<User> ListUsers(SearchUsersFilters filters)
         {
-            #warning TODO! ListUsers Repository
-            throw new NotImplementedException();
+            FilterDefinition<User> filter = this.BuildUsersQuery(filters);
+
+            var result = this.Collection.Find(filter)
+                .WithSorting(filters)
+                .WithPaging(filters).ToList();
+
+            return new SearchContainer<User>()
+            {
+                Items = result,
+                Total = result.Count,
+                PageNumber = filters.PageNumber,
+                PageSize = filters.PageSize
+            };
+        }
+
+        private FilterDefinition<User> BuildUsersQuery(SearchUsersFilters filters)
+        {
+            FilterDefinition<User> filter = null;
+
+            if (filters.IsActive != null)
+            {
+                filter = filter.FilterJoin(Builders<User>.Filter.Eq(x => x.Security.IsBlocked, !filters.IsActive));
+            }
+
+            if (string.IsNullOrWhiteSpace(filters.Role) == false && string.IsNullOrWhiteSpace(filters.PermissionKey) == false)
+            {
+                filter = filter.FilterJoin(Builders<User>.Filter
+                    .ElemMatch(x => x.Roles, x => x.Keys.Contains(filters.PermissionKey) & x.Type == filters.Role));
+            }
+            else if (string.IsNullOrWhiteSpace(filters.Role) == false)
+            {
+                filter = filter.FilterJoin(Builders<User>.Filter.ElemMatch(x => x.Roles, x => x.Type == filters.Role));
+            }
+            else if (string.IsNullOrWhiteSpace(filters.PermissionKey) == false)
+            {
+                filter = filter.FilterJoin(Builders<User>.Filter.ElemMatch(x => x.Roles, x => x.Keys.Contains(filters.PermissionKey)));
+            }
+
+            if (string.IsNullOrWhiteSpace(filters.Keywords) == false)
+            {
+                var regexFilter = Regex.Escape(filters.Keywords);
+                var bsonRegex = new BsonRegularExpression(filters.Keywords, "i");
+
+                var name = Builders<User>.Filter.Regex(x => x.Name, bsonRegex);
+                var email = Builders<User>.Filter.Regex(x => x.Contacts.Email, bsonRegex);
+                var phone = Builders<User>.Filter.Regex(x => x.Contacts.Phone, bsonRegex);
+                var company = Builders<User>.Filter.Regex(x => x.Company, bsonRegex);
+
+                var keywordFilter = (name | company | email | phone);
+
+                filter = filter.FilterJoin(keywordFilter);
+            }
+
+            if (filter == null) filter = Builders<User>.Filter.Empty;
+
+            return filter;
         }
     }
 }

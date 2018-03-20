@@ -1,10 +1,11 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using SimpleAuth.Api.Models;
+using SimpleAuth.Api.Models.Filters;
 using SimpleAuth.Api.Repository.Interface;
+using SimpleAuth.Api.Repository.QueryBuilders;
 using SimpleAuth.Api.Utilities.Interface;
 using System;
-using System.Collections.Generic;
 using UAUtil.Models;
 
 namespace SimpleAuth.Api.Repository
@@ -39,9 +40,21 @@ namespace SimpleAuth.Api.Repository
             return this.Collection.Find(u => u.Token == token).FirstOrDefault();
         }
 
-        public List<AccessToken> GetAllAccessTokens(Guid userKey)
+        public SearchContainer<AccessToken> GetAllAccessTokens(SearchAccessTokensFilters filters)
         {
-            return this.Collection.Find(x => x.UserKey == userKey).ToList();
+            FilterDefinition<AccessToken> filter = this.BuildAccessTokensQuery(filters);
+           
+            var result = this.Collection.Find(filter)
+                .WithSorting(filters)
+                .WithPaging(filters).ToList();
+
+            return new SearchContainer<AccessToken>()
+            {
+                Items = result,
+                Total = result.Count,
+                PageNumber = filters.PageNumber,
+                PageSize = filters.PageSize
+            };
         }
 
         public AccessToken GetAccessToken(Guid userKey, UserAgentDetails deviceInfo, string ip)
@@ -52,6 +65,20 @@ namespace SimpleAuth.Api.Repository
                 at.DeviceInfo.Platform == deviceInfo.Platform && 
                 at.Ip == ip &&
                 at.DeviceInfo.OperatingSystem == deviceInfo.OperatingSystem).FirstOrDefault();
+        }
+
+        private FilterDefinition<AccessToken> BuildAccessTokensQuery(SearchAccessTokensFilters filters)
+        {
+            FilterDefinition<AccessToken> filter = null;
+
+            if (filters.UserKey != null)
+            {
+                filter = filter.FilterJoin(Builders<AccessToken>.Filter.Eq(x => x.UserKey, filters.UserKey));
+            }
+
+            if (filter == null) filter = Builders<AccessToken>.Filter.Empty;
+
+            return filter;
         }
     }
 }

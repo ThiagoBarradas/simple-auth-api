@@ -6,9 +6,15 @@ namespace SimpleAuth.Api.Utilities
 {
     public static class NancyUtility
     {
-        public static T BindFromQuery<T>(this NancyModule module)
+        public static T BindFromAll<T>(this NancyModule module) 
         {
+            if (module.Context.Request.Method == "GET")
+            {
+                module.Context.Request.Headers.ContentType = null;
+            }
+
             var request = module.Bind<T>();
+             
             var props = typeof(T).GetProperties();
             foreach (var prop in props)
             {

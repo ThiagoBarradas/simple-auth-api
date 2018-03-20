@@ -4,7 +4,6 @@ using SimpleAuth.Api.Models;
 using SimpleAuth.Api.Models.Request;
 using SimpleAuth.Api.Models.Response;
 using SimpleAuth.Api.Repository.Interface;
-using SimpleAuth.Api.Utilities;
 using SimpleAuth.Api.Utilities.Interface;
 using System;
 using System.Net;
@@ -94,6 +93,23 @@ namespace SimpleAuth.Api.Managers
 
             this.AuthRepository.DeleteAllAccessTokens(userKey, token);
 
+            response.StatusCode = HttpStatusCode.OK;
+            response.IsSuccess = true;
+
+            return response;
+        }
+
+        public BaseResponse<SearchResponse<GetAccessTokenResponse>> ListSessions(SearchSessionsRequest request, User user)
+        {
+            BaseResponse<SearchResponse<GetAccessTokenResponse>> response = new BaseResponse<SearchResponse<GetAccessTokenResponse>>();
+
+            request.UserKey = user.UserKey;
+
+            var filters = AccessTokenMapper.Map(request);
+            var sessions = this.AuthRepository.GetAllAccessTokens(filters);
+
+            SearchResponse<GetAccessTokenResponse> sessionsResponse = AccessTokenMapper.Map(sessions);
+            response.SuccessBody = sessionsResponse;
             response.StatusCode = HttpStatusCode.OK;
             response.IsSuccess = true;
 

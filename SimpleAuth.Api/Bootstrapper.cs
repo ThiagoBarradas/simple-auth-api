@@ -4,6 +4,7 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.ErrorHandling;
 using Nancy.TinyIoc;
+using Newtonsoft.Json;
 using SimpleAuth.Api.Handlers;
 using SimpleAuth.Api.Managers;
 using SimpleAuth.Api.Modules;
