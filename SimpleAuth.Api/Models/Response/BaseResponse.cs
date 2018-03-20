@@ -37,5 +37,13 @@ namespace SimpleAuth.Api.Models.Response
             this.IsSuccess = false;
             this.ErrorBody.Errors.Add(error);
         }
+
+        public static BaseResponse<T> Create(HttpStatusCode statusCode)
+        {
+            return new BaseResponse<T>
+            {
+                StatusCode = statusCode
+            };
+        }
     }
 }

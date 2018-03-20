@@ -2,6 +2,7 @@
 using Nancy.Validation;
 using SimpleAuth.Api.Managers;
 using SimpleAuth.Api.Models.Request;
+using SimpleAuth.Api.Modules.Interface;
 
 namespace SimpleAuth.Api.Controller
 {
@@ -9,7 +10,8 @@ namespace SimpleAuth.Api.Controller
     {
         private IPasswordResetManager PasswordResetManager { get; set; }
 
-        public PasswordResetController(IPasswordResetManager passwordResetManager) 
+        public PasswordResetController(IPasswordResetManager passwordResetManager, ISecurityModule securityModule)
+            : base(securityModule)
         {
             this.PasswordResetManager = passwordResetManager;
 

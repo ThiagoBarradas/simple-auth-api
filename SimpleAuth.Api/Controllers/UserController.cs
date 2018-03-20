@@ -2,6 +2,7 @@
 using Nancy.Validation;
 using SimpleAuth.Api.Managers;
 using SimpleAuth.Api.Models.Request;
+using SimpleAuth.Api.Modules.Interface;
 using SimpleAuth.Api.Utilities;
 
 namespace SimpleAuth.Api.Controller
@@ -10,7 +11,8 @@ namespace SimpleAuth.Api.Controller
     {
         private IUserManager UserManager { get; set; }
 
-        public UserController(IUserManager userManager) 
+        public UserController(IUserManager userManager, ISecurityModule securityModule)
+            : base(securityModule)
         {
             this.UserManager = userManager;
 

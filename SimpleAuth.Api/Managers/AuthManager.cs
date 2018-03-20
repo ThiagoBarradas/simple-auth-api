@@ -6,6 +6,7 @@ using SimpleAuth.Api.Models.Response;
 using SimpleAuth.Api.Repository.Interface;
 using SimpleAuth.Api.Utilities;
 using SimpleAuth.Api.Utilities.Interface;
+using System;
 using System.Net;
 using UAUtil;
 
@@ -73,6 +74,30 @@ namespace SimpleAuth.Api.Managers
             var userLoginResponse = AccessTokenMapper.Map(accessToken, user);
 
             return userLoginResponse;
+        }
+
+        public BaseResponse<object> Logout(string token)
+        {
+            BaseResponse<object> response = new BaseResponse<object>();
+
+            this.AuthRepository.DeleteAccessToken(token);
+
+            response.StatusCode = HttpStatusCode.OK;
+            response.IsSuccess = true;
+
+            return response;
+        }
+
+        public BaseResponse<object> LogoutAllExcept(Guid userKey, string token)
+        {
+            BaseResponse<object> response = new BaseResponse<object>();
+
+            this.AuthRepository.DeleteAllAccessTokens(userKey, token);
+
+            response.StatusCode = HttpStatusCode.OK;
+            response.IsSuccess = true;
+
+            return response;
         }
     }
 }

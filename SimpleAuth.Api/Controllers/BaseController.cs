@@ -2,12 +2,19 @@
 using Nancy.Validation;
 using PackUtils;
 using SimpleAuth.Api.Models.Response;
-using System;
+using SimpleAuth.Api.Modules.Interface;
 
 namespace SimpleAuth.Api.Controller
 {
     public abstract class BaseController : NancyModule
     {
+        protected ISecurityModule SecurityModule { get; set; }
+
+        public BaseController(ISecurityModule securityModule)
+        {
+            this.SecurityModule = securityModule;
+        }
+
         protected object CreateResponse<T>(BaseResponse<T> response)
         {
             return this.CreateJsonResponse(response);
@@ -47,6 +54,17 @@ namespace SimpleAuth.Api.Controller
             }
 
             return httpResponse;
+        }
+
+        public object Unauthorized()
+        {
+            var statusCode = System.Net.HttpStatusCode.Unauthorized;
+            return this.CreateJsonResponse(BaseResponse<object>.Create(statusCode));
+        }
+
+        public bool Authorize()
+        {
+            return this.SecurityModule.Authorize(this);
         }
     }
 }

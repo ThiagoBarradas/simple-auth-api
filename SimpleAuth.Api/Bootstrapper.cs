@@ -4,9 +4,10 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.ErrorHandling;
 using Nancy.TinyIoc;
-using Newtonsoft.Json;
 using SimpleAuth.Api.Handlers;
 using SimpleAuth.Api.Managers;
+using SimpleAuth.Api.Modules;
+using SimpleAuth.Api.Modules.Interface;
 using SimpleAuth.Api.Repository;
 using SimpleAuth.Api.Repository.Interface;
 using SimpleAuth.Api.Utilities;
@@ -24,7 +25,6 @@ namespace SimpleAuth.Api
             this.EnableCors(pipelines);
             this.EnableCSRF(pipelines);
             this.InitializeRepository();
-            
         }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
@@ -46,6 +46,9 @@ namespace SimpleAuth.Api
             // Utils
             var ipInfoClient = new IpInfoApiClient(Startup.Configuration["IpInfo:ApiUrl"]);
             container.Register<IIpInfoApiClient>(ipInfoClient);
+
+            // Modules
+            container.Register<ISecurityModule, SecurityModule>().AsSingleton();
 
             // Manager
             container.Register<IPasswordResetManager, PasswordResetManager>().AsSingleton();
