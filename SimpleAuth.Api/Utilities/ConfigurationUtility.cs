@@ -14,25 +14,25 @@ namespace SimpleAuth.Api.Utilities
             this.ConfigurationRoot = configurationRoot;
         }
 
-        public string SimpleAuthServiceUrl => this.ConfigurationRoot["Application:Url"];
+        public string SimpleAuthServiceUrl => this.ConfigurationRoot["ApplicationUrl"];
 
-        public TimeZoneInfo DefaultTimeZone => TimeZoneInfo.FindSystemTimeZoneById(this.ConfigurationRoot["Default:TimeZone"]);
+        public TimeZoneInfo DefaultTimeZone => TimeZoneInfo.FindSystemTimeZoneById(this.ConfigurationRoot["DefaultTimeZone"]);
 
-        public CultureInfo DefaultCultureInfo => CultureInfo.GetCultureInfo(this.ConfigurationRoot["Default:CultureInfo"]);
+        public CultureInfo DefaultCultureInfo => CultureInfo.GetCultureInfo(this.ConfigurationRoot["DefaultCultureInfo"]);
 
-        public int PasswordResetExpiresInHours => Int32.Parse(this.ConfigurationRoot["Default:PasswordResetExpiresInHours"]);
+        public int PasswordResetExpiresInHours => Int32.Parse(this.ConfigurationRoot["DefaultPasswordResetExpiresInHours"]);
 
-        public string DatabaseConnectionHost => this.ConfigurationRoot["DatabaseConnection:Host"];
+        public string DatabaseConnectionHost => this.ConfigurationRoot["DatabaseConnectionHost"];
 
-        public string DatabaseConnectionPort => this.ConfigurationRoot["DatabaseConnection:Port"];
+        public string DatabaseConnectionPort => this.ConfigurationRoot["DatabaseConnectionPort"];
 
-        public string DatabaseConnectionUsername => this.ConfigurationRoot["DatabaseConnection:Username"];
+        public string DatabaseConnectionUsername => this.ConfigurationRoot["DatabaseConnectionUsername"];
 
-        public string DatabaseConnectionPassword => this.ConfigurationRoot["DatabaseConnection:Password"];
+        public string DatabaseConnectionPassword => this.ConfigurationRoot["DatabaseConnectionPassword"];
 
-        public string DatabaseConnectionName => this.ConfigurationRoot["DatabaseConnection:Name"];
+        public string DatabaseConnectionName => this.ConfigurationRoot["DatabaseConnectionName"];
 
-        public string IpInfoApiUrl => this.ConfigurationRoot["IpInfo:ApiUrl"];
+        public string IpInfoApiUrl => this.ConfigurationRoot["IpInfoApiUrl"];
 
         public string HashGap => this.ConfigurationRoot["HashGap"];
     }
