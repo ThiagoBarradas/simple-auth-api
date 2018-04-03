@@ -1,5 +1,4 @@
-[![CircleCI](https://circleci.com/gh/ThiagoBarradas/simpleauth-api/tree/master.svg?style=svg)](https://circleci.com/gh/ThiagoBarradas/simpleauth-api/tree/master)
-[![codecov](https://codecov.io/gh/ThiagoBarradas/simpleauth-api/branch/master/graph/badge.svg)](https://codecov.io/gh/ThiagoBarradas/simpleauth-api)
+[![CircleCI](https://circleci.com/gh/ThiagoBarradas/simple-auth-api/tree/master.svg?style=svg)](https://circleci.com/gh/ThiagoBarradas/simple-auth-api/tree/master)
 
 # SimpleAuth Api
 
