@@ -17,7 +17,7 @@ namespace SimpleAuth.Api
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"appsettings.{envName}.json")
+                .AddJsonFile($"appSettings.{envName}.json")
                 .AddEnvironmentVariables("SIMPLEAUTH_");
 
             Configuration = builder.Build();
