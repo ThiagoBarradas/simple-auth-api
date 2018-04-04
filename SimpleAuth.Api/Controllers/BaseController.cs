@@ -53,6 +53,8 @@ namespace SimpleAuth.Api.Controller
                 httpResponse = Response.AsJson(response.ErrorBody, statusCode);
             }
 
+            httpResponse.ContentType = "application/json";
+
             return httpResponse;
         }
 
