@@ -52,12 +52,7 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-#      - hold:
-#         type: approval
-#         requires:
-#           - build
       - deploy:
           context: org-global
           requires:
             - build
- #           - hold 
