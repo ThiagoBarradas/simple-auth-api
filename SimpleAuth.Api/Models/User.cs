@@ -64,6 +64,8 @@ namespace SimpleAuth.Api.Models
 
     public class UserRole
     {
+        public UserRole() { }
+
         public UserRole(string type)
         {
             this.Type = type;
