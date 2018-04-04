@@ -30,7 +30,8 @@ namespace SimpleAuth.Api.Handlers
         {
             context.Response = new Response()
             {
-                StatusCode = statusCode
+                StatusCode = statusCode,
+                ContentType = "application/json"
             };
         }
     }
