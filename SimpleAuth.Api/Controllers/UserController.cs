@@ -18,7 +18,7 @@ namespace SimpleAuth.Api.Controller
 
             this.Post("users", args => this.Create());
             this.Get("users", args => this.List());
-            this.Get("users/email-activate/{emailConfirmationToken}", args => this.ConfirmEmail());
+            this.Patch("users/email-activate/{emailConfirmationToken}", args => this.ConfirmEmail());
             this.Get("users/email/{email}/exists", args => this.IsEmailAvailable());
             this.Get("users/{userKey}", args => this.Get());
             this.Put("users/{userKey}", args => this.Update());
