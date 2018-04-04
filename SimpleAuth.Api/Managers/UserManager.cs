@@ -47,7 +47,7 @@ namespace SimpleAuth.Api.Managers
         {
             BaseResponse<GetUserResponse> response = new BaseResponse<GetUserResponse>();
 
-            var user = this.UserRepository.GetUser(request.Contacts.Email);
+            var user = this.UserRepository.GetUser(request.UserKey);
 
             if (user != null)
             {
