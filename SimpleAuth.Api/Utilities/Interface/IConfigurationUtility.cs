@@ -26,5 +26,9 @@ namespace SimpleAuth.Api.Utilities.Interface
         string IpInfoApiUrl { get; }
 
         string HashGap { get; }
+
+        string RollbarAccessToken { get; }
+
+        string RollbarEnvironment { get; }
     }
 }

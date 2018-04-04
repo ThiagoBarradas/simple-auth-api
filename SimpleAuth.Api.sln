@@ -5,11 +5,13 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EA745D87-F18C-42BC-A5DB-D39C4D4A7E0F}"
 	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
 		codecov.yml = codecov.yml
-		CONTRIBUTING.md = CONTRIBUTING.md
+		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
 		Dockerfile = Dockerfile
-		ISSUE-TEMPLATE.md = ISSUE-TEMPLATE.md
-		PULLREQUEST-TEMPLATE.md = PULLREQUEST-TEMPLATE.md
+		.github\ISSUE_TEMPLATE.md = .github\ISSUE_TEMPLATE.md
+		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
 		README.md = README.md
 	EndProjectSection
 EndProject

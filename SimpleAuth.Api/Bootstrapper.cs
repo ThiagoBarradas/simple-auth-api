@@ -4,8 +4,9 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.ErrorHandling;
 using Nancy.TinyIoc;
-using Newtonsoft.Json;
 using SimpleAuth.Api.Handlers;
+using SimpleAuth.Api.Loggers;
+using SimpleAuth.Api.Loggers.Interface;
 using SimpleAuth.Api.Managers;
 using SimpleAuth.Api.Modules;
 using SimpleAuth.Api.Modules.Interface;
@@ -25,6 +26,7 @@ namespace SimpleAuth.Api
             this.AddStopwatch(pipelines);
             this.EnableCors(pipelines);
             this.EnableCSRF(pipelines);
+            this.InitLogger(pipelines, container);
             this.InitializeRepository();
         }
 
@@ -34,6 +36,10 @@ namespace SimpleAuth.Api
             container.Register<IConfigurationRoot>(Startup.Configuration);
             container.Register<IConfigurationUtility, ConfigurationUtility>().AsSingleton();
             container.Register<IUserAgentUtility, UserAgentUtility>().AsSingleton();
+
+            // Loggers
+            container.Register<IExceptionLogger, RollbarLogger>().AsSingleton();
+            container.Register<IRequestLogger, SerilogLogger>().AsSingleton();
 
             // Others
             container.Register(PackUtils.JsonUtility.CamelCaseJsonSerializer);
@@ -45,7 +51,7 @@ namespace SimpleAuth.Api
         protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             // Utils
-            var ipInfoClient = new IpInfoApiClient(Startup.Configuration["IpInfo:ApiUrl"]);
+            var ipInfoClient = new IpInfoApiClient(Startup.Configuration["IpInfoApiUrl"]);
             container.Register<IIpInfoApiClient>(ipInfoClient);
 
             // Modules
@@ -103,6 +109,29 @@ namespace SimpleAuth.Api
         private void InitializeRepository()
         {
             BaseRepository<object>.InitializeRepository();
+        }
+
+        private void InitLogger(IPipelines pipelines, TinyIoCContainer container)
+        {
+            container.Resolve<IRequestLogger>().Setup(container.Resolve<IConfigurationUtility>());
+
+            pipelines.OnError.AddItemToStartOfPipeline((context, exception) =>
+            {
+                container.Resolve<IExceptionLogger>().LogCritical(exception);
+                container.Resolve<IRequestLogger>().LogData(context, exception);
+                return null;
+            });
+
+            pipelines.AfterRequest.AddItemToEndOfPipeline((context) =>
+            {
+                container.Resolve<IRequestLogger>().LogData(context);
+            });
+
+            pipelines.OnError.AddItemToStartOfPipeline((context, exception) =>
+            {
+                container.Resolve<IExceptionLogger>().LogCritical(exception);
+                return null;
+            });
         }
     }
 }

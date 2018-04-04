@@ -35,5 +35,9 @@ namespace SimpleAuth.Api.Utilities
         public string IpInfoApiUrl => this.ConfigurationRoot["IpInfoApiUrl"];
 
         public string HashGap => this.ConfigurationRoot["HashGap"];
+
+        public string RollbarAccessToken => this.ConfigurationRoot["RollbarAccessToken"];
+
+        public string RollbarEnvironment => this.ConfigurationRoot["RollbarEnvironment"];
     }
 }

@@ -1,6 +1,6 @@
-﻿using SimpleAuth.Api.Utilities;
-using Nancy;
+﻿using Nancy;
 using SimpleAuth.Api.Modules.Interface;
+using SimpleAuth.Api.Utilities;
 
 namespace SimpleAuth.Api.Controller
 {
