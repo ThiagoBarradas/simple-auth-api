@@ -6,7 +6,7 @@ ENV ASPNETCORE_ENVIRONMENT="Development"
 # Args
 ARG distFolder=SimpleAuth.Api/bin/Release/netcoreapp2.0
 ARG apiProtocol=http
-ARG apiPort=505
+ARG apiPort=506
 ARG appFile=SimpleAuth.Api.dll
 
 # Copy files to /app
