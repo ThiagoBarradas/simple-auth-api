@@ -22,7 +22,7 @@ namespace SimpleAuth.Api.Loggers
                 .MinimumLevel.Override("System", LogEventLevel.Error)
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
-                .Enrich.WithProperty("Application", "IpInfo")
+                .Enrich.WithProperty("Application", "SimpleAuth")
                 .WriteTo.Console()
                 .CreateLogger();
         }
